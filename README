@@ -1,0 +1,11 @@
+This is a simple test/experiment that attaches a BPF program to a kprobe of SYS_openat2, then reads and outputs the command names and filenames from a sample ring buffer written by the BPF program.
+
+build bpf:
+clang -g -O2 -target bpf -D__TARGET_ARCH_x86 -c bpf/trace.bpf.c -o trace.bpf.o
+run with correct permissions and memlock limit:
+[go] run main.go
+...
+run main.go
+2025/08/06 13:02:53 Waiting for events... Press Ctrl+C to exit.
+PID: 35828 COMM: main FILE: /etc/localtime
+...
