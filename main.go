@@ -11,7 +11,6 @@ import (
 	"github.com/cilium/ebpf"
 	"github.com/cilium/ebpf/link"
 	"github.com/cilium/ebpf/ringbuf"
-	"github.com/cilium/ebpf/rlimit"
 )
 
 const (
@@ -23,12 +22,6 @@ type event struct {
 	EPid      uint32
 	EFilename [fileNameLen]byte
 	EComm     [taskCommLen]byte
-}
-
-func init() {
-	if err := rlimit.RemoveMemlock(); err != nil {
-		panic(err)
-	}
 }
 
 func main() {
@@ -90,8 +83,8 @@ func main() {
 
 			fmt.Printf("PID: %d COMM: %s FILE: %s\n",
 				evt.EPid,
-				string(bytes.Trim(evt.EComm[:], "\x00")),
-				string(bytes.Trim(evt.EFilename[:], "\x00")))
+				string(evt.EComm[:bytes.Index(evt.EComm[:], []byte("\x00"))]),
+				string(evt.EFilename[:bytes.Index(evt.EFilename[:], []byte("\x00"))]))
 		}
 	}()
 
