@@ -5,7 +5,6 @@ clang -g -O2 -target bpf -D__TARGET_ARCH_x86 -c bpf/trace.bpf.c -o trace.bpf.o
 run with correct permissions and memlock limit:
 [go] run main.go
 ...
-run main.go
 2025/08/06 13:02:53 Waiting for events... Press Ctrl+C to exit.
 PID: 35828 COMM: main FILE: /etc/localtime
 ...
